@@ -7,29 +7,35 @@ import Delete from "./Delete";
 import AddForm from "./AddForm";
 
 export default function Library() {
-    const initialData = [
+
+    const initialBook = [
         {
-            id: 1,
             name: 'Refactoring',
             author: 'Martin Fowler',
             topic: 'Programming'
         },
         {
-            id: 2,
             name: 'Designing Data-Intensive Applications',
             author: 'Martin Kleppmann',
             topic: 'Database'
         },
         {
-            id: 3,
             name: 'The Phoenix Project',
             author: 'Gene Kim',
             topic: 'DevOps'
         }
     ]
-    const [data, setData] = useState(initialData)
+
+    const [data, setData] = useState(() => {
+        if(localStorage.getItem('books')){
+            const storageData = JSON.parse(localStorage.getItem('books'))
+            return storageData
+        }
+        else return initialBook
+    })
     //search input
     const [searchContent, setSearchContent] = useState('')
+
     const [openDelete, setOpenDelete] = useState(false)
     const [deleteId, setDeleteId] = useState('')
     const [openAdd, setOpenAdd] = useState(false)
@@ -38,14 +44,15 @@ export default function Library() {
     const [fauthor, setFauthor] = useState('')
     const [ftopic, setFtopic] = useState('Programming')
 
-    const searchedBooks = data?.filter(book => book.name.toLowerCase().includes(searchContent.toLowerCase()));
-
-    function deleteButtonOnClickHandler(id){
+    function deleteButtonOnClickHandler(id) {
         setOpenDelete(true)
         setDeleteId(id)
+        console.log(id)
     }
 
-    function onSearchHandler(searchContent){
+    const searchedBooks = data.filter(book => book.name.toLowerCase().includes(searchContent.toLowerCase()));
+
+    function onSearchHandler(searchContent) {
         setSearchContent(searchContent)
     }
 
@@ -53,17 +60,22 @@ export default function Library() {
         setOpenDelete(false)
     }
 
-    const confirmButtonOnClickHandler = () =>{
+    const confirmButtonOnClickHandler = () => {
+        const newDataDlt = JSON.parse(localStorage.getItem('books'));
         console.log(deleteId)
-        setData(data.filter(book => book.id !== Number(deleteId)))
+        newDataDlt.splice(deleteId, 1)
+        // console.log(newDataDlt)
+        const jsonNewDataDlt = JSON.stringify(newDataDlt);
+        localStorage.setItem("books", jsonNewDataDlt);
+        // console.log(jsonNewDataDlt)
+        setData(newDataDlt);
         setOpenDelete(false)
+        // console.log(deleteId)
     }
 
-    const addButtonOnClickHandler = () =>{
+    const addButtonOnClickHandler = () => {
         setOpenAdd(true)
     }
-
-    var index = 3;
 
     const cancelAddOnClickHandler = () => {
         setOpenAdd(false)
@@ -84,23 +96,30 @@ export default function Library() {
     const createButtonOnClickHandler = (e) => {
         e.preventDefault()
         const newBooks = {
-            id : ++index,
-            name : {fname},
-            author : {fauthor},
-            topic : {ftopic},
+            name: fname,
+            author: fauthor,
+            topic: ftopic,
         }
         console.log(newBooks)
         console.log(data)
-        setData(data.push(newBooks))
+        setData(prevData => {
+            const newData = [...prevData, newBooks]
+            const jsonData = JSON.stringify(newData)
+            localStorage.setItem("books", jsonData)
+            return newData
+        })
         setOpenAdd(false)
+        setFname('')
+        setFauthor('')
+        setFtopic('Programing')
         // setData(data.push(newBooks))
     }
-    
+
     return (
         <div>
             <Header></Header>
             <div className="my-12 flex justify-end mx-8">
-                <SearchBar 
+                <SearchBar
                     onSearchHandler={onSearchHandler}
                     searchContent={searchContent}
                 />

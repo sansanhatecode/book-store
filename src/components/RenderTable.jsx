@@ -17,9 +17,9 @@ export default function RenderTable(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {books.map((book) => (
+                    {books.map((book, index) => (
                         <tr 
-                            key={book.id}
+                            key={index}
                             className="h-14"
                         >
                             <td className="border-2 border-white px-4">{book.name}</td>
@@ -27,12 +27,11 @@ export default function RenderTable(props) {
                             <td className="border-2 border-white px-4">{book.topic}</td>
                             <td className="border-2 border-white">
                                 <button
-                                    id = {book.id}
+                                    id = {index}
                                     onClick={(e)=>{
-                                        {deleteButtonOnClickHandler(e.currentTarget.id)}
-                                        // console.log(e.currentTarget)
-                                        // console.log(book.id)
-                                    }}
+                                        deleteButtonOnClickHandler(e.currentTarget.id);
+                                    }
+                                    }
                                     className="mx-[45%]"
                                 >
                                     <i className="fa-solid fa-trash text-red-400 hover:text-red-500"></i>

@@ -9,7 +9,7 @@ export default function Delete(props) {
         confirmButtonOnClickHandler,
     } = props
 
-    let foundBook = books.find(book => book.id === Number(id))
+    let foundBook = books[Number(id)]
     // console.log(id)
 
     return (

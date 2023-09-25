@@ -34,7 +34,8 @@ export default function AddForm(props) {
                     required
                     onChange={(e) => {
                         {nameOnChangeHandler(e.target.value)}
-                        console.log((e.target.value))
+                        e.preventDefault()
+                        // console.log((e.target.value))
                     }}
                 />
                 <label 
@@ -49,7 +50,8 @@ export default function AddForm(props) {
                     required
                     onChange={(e) => {
                         {authorOnChangeHandler(e.target.value)}
-                        console.log((e.target.value))
+                        e.preventDefault()
+                        // console.log((e.target.value))
                     }}
                 />
                 <label 
@@ -62,7 +64,8 @@ export default function AddForm(props) {
                     className="border-red-200 border-2 mb-10 rounded-md h-8"
                     onChange={(e) => {
                         {topicOnChangeHandler(e.target.value)}
-                        console.log((e.target.value))
+                        e.preventDefault()
+                        // console.log((e.target.value))
                     }}
                 >
                     <option value="programming">Programming</option>
